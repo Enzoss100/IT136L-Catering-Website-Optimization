@@ -1,5 +1,5 @@
 # IT136L Web Optimization Project
-- Main Issues
+Main Issues
 [] UI Colors
 [] No Archive
 [] Obscure Login Admin
