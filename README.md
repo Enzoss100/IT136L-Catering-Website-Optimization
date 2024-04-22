@@ -1,8 +1,8 @@
 # IT136L Web Optimization Project
 - Main Issues
-	- [] UI Colors
-	- [] No Archive
-	- [] Obscure Login Admin
+	- [ ] UI Colors
+	- [ ] No Archive
+	- [ ] Obscure Login Admin
 	- [x] No Sort
 
 - Rule of 3s
