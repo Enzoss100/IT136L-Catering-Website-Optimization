@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 05, 2023 at 05:57 AM
+-- Generation Time: Apr 26, 2024 at 03:44 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.1.2
 
@@ -87,17 +87,21 @@ CREATE TABLE `orders` (
   `eventLocation` varchar(255) DEFAULT NULL,
   `request` text DEFAULT NULL,
   `totalPrice` decimal(10,2) DEFAULT NULL,
-  `orderStatus` varchar(50) DEFAULT 'pending'
+  `orderStatus` varchar(50) DEFAULT 'pending',
+  `date_archived` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`orderId`, `orderDate`, `cxName`, `contactNo`, `eventDate`, `eventTime`, `eventLocation`, `request`, `totalPrice`, `orderStatus`) VALUES
-(1, '2023-08-05 03:40:56', 'Pepito Manaloto', '09521231234', '2023-08-09', '15:40', '1234 Batista st, Sampaloc, Manila', 'could you please ensure all dishes are prepared gluten-free, as several of our guests have gluten intolerances?', '37444.16', 'ongoing'),
-(2, '2023-08-05 03:42:51', 'John Doe', '09192151111', '2023-08-25', '17:45', '1234 Constantine Ext., Greenville Subdivision, Valenzuela City', 'No need for utensils', '20604.52', 'pending'),
-(3, '2023-08-05 03:48:45', 'Juan Cruz', '04818210101', '2023-08-23', '07:50', 'Unit G, West Tower, Shangri-la Place', 'I kindly request a delectable vegan-friendly menu with a diverse selection of plant-based delights to cater to our guests\' dietary preferences and make our event a memorable experience.', '23416.00', 'cancelled');
+INSERT INTO `orders` (`orderId`, `orderDate`, `cxName`, `contactNo`, `eventDate`, `eventTime`, `eventLocation`, `request`, `totalPrice`, `orderStatus`, `date_archived`) VALUES
+(1, '2023-08-05 03:40:56', 'Pepito Manaloto', '09521231234', '2024-04-27', '15:40', '1234 Batista st, Sampaloc, Manila', 'could you please ensure all dishes are prepared gluten-free, as several of our guests have gluten intolerances?', '37444.16', 'ongoing', NULL),
+(2, '2023-08-05 03:42:51', 'John Doe', '09192151111', '2024-04-29', '17:45', '1234 Constantine Ext., Greenville Subdivision, Valenzuela City', 'no need for utensils', '20604.52', 'ongoing', NULL),
+(3, '2023-08-05 03:48:45', 'Juan Cruz', '04818210101', '2024-04-23', '07:50', 'Unit G, West Tower, Shangri-la Place', 'i kindly request a delectable vegan-friendly menu with a diverse selection of plant-based delights to cater to our guests\' dietary preferences and make our event a memorable experience.', '23416.00', 'completed', NULL),
+(4, '2024-04-25 23:36:46', 'Celia Ramirez', '09567212121', '2024-04-28', '16:30', '354 San Jose St., Sta Cruz, Manila', 'None', '50627.00', 'pending', NULL),
+(5, '2024-04-25 23:39:38', 'Ruben Soto', '09213456789', '2024-04-24', '18:30', '88 Masangkay St., Poblacion, Makati', 'Please arrive early.', '52036.00', 'completed', NULL),
+(6, '2024-04-26 01:42:45', 'Ignacio Flores', '08948217249', '2024-04-29', '11:00', '213 Sanguna street, brgy plainview, Mandaluyong\r\n', 'Children\'s choir are excited for their healthy treats!\r\nKindly add more spoons (at least 30).\r\nThank you!\r\n', '30574.00', 'pending', NULL);
 
 -- --------------------------------------------------------
 
@@ -133,7 +137,18 @@ INSERT INTO `order_items` (`orderItemId`, `pkgId`, `orderId`, `prodId`, `pax`, `
 (10, 1, 3, 11, 30, 'off', '3466.20', '15181.20'),
 (11, 1, 3, 3, 30, 'off', '4215.00', '15181.20'),
 (12, 2, 3, 13, 34, 'on', '2645.20', '8574.80'),
-(13, 2, 3, 4, 34, 'on', '5589.60', '8574.80');
+(13, 2, 3, 4, 34, 'on', '5589.60', '8574.80'),
+(14, 1, 4, 5, 100, 'on', '22045.00', '37095.00'),
+(15, 1, 4, 3, 100, 'on', '14050.00', '37095.00'),
+(16, 2, 4, 13, 60, 'off', '4668.00', '14532.00'),
+(17, 2, 4, 4, 60, 'off', '9864.00', '14532.00'),
+(18, 1, 5, 1, 80, 'on', '14400.00', '52836.00'),
+(19, 1, 5, 2, 80, 'on', '20000.00', '52836.00'),
+(20, 1, 5, 5, 80, 'on', '17636.00', '52836.00'),
+(21, 1, 6, 10, 50, 'on', '6020.00', '10410.00'),
+(22, 1, 6, 13, 50, 'on', '3890.00', '10410.00'),
+(23, 2, 6, 1, 60, 'on', '10800.00', '21264.00'),
+(24, 2, 6, 4, 60, 'on', '9864.00', '21264.00');
 
 -- --------------------------------------------------------
 
@@ -257,13 +272,13 @@ ALTER TABLE `inventory`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `orderId` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `orderId` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `orderItemId` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `orderItemId` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `products`

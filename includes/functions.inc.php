@@ -469,9 +469,9 @@ function updateOrderInfo($conn, $orderId, $cxName, $eventDate, $eventTime, $cont
     else{ 
       // Update the product table
       $query = "UPDATE orders SET cxName=?, eventDate=?, eventTime=?, contactNo=?, eventLocation=?, request=? WHERE orderId = ?";
-      $stmt2 = $conn->prepare($query);
-      $stmt2->bind_param("ssssssi", $cxName, $eventDate, $eventTime, $contactNo, $eventLocation, $request, $orderId);
-      $stmt2->execute();
+      $stmt = $conn->prepare($query);
+      $stmt->bind_param("ssssssi", $cxName, $eventDate, $eventTime, $contactNo, $eventLocation, $request, $orderId);
+      $stmt->execute();
       header("location: ../PHP/admin/manageOrders.php?updateOrderInfo=success");
       exit();
     }
@@ -511,5 +511,43 @@ function formatTimestamp($dateString) {
     $time12hr = date('h:i A', $timestamp); 
 
     return array($month, $day, $year, $time12hr);
+}
 
+// Set date of archive to current date and time.
+function archiveOrder($conn, $orderId) {
+    if (!$conn) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
+    date_default_timezone_set('Asia/Manila'); // Set the timezone
+    $cancellationTimestamp = date('Y-m-d H:i:s'); // Current date and time
+    $sql = "UPDATE orders SET date_archived = ? WHERE orderID = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('si', $cancellationTimestamp, $orderId);
+    $stmt->execute();
+}
+
+// Set date of archive to NULL if unarchiving oder.
+function unarchiveOrder($conn, $orderId) {
+    if(!$conn) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
+    $sql = "UPDATE orders SET date_archived = NULL WHERE orderID = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $orderId);
+    $stmt->execute();
+
+}
+
+function autoDeleteOrders($conn) {
+    // First, delete foreign keys related to the archived orders.
+    $del_order_items = "DELETE FROM order_items WHERE orderId IN (SELECT orderId FROM orders WHERE TIMESTAMPDIFF(MINUTE, date_archived, NOW()) >= 5)";
+    if ($conn->query($del_order_items) === FALSE) {
+        echo 'Error deleting related foreign keys: ' . $conn->error;
+    }
+
+    // Then, delete the orders.
+    $del_archived_orders = "DELETE FROM orders WHERE TIMESTAMPDIFF(MINUTE, date_archived, NOW()) >= 5";
+    if ($conn->query($del_archived_orders) === FALSE) {
+        echo 'Error deleting orders: ' . $conn->error;
+    }
 }
